@@ -49,7 +49,7 @@ contains
             end if
         end do
         run_dir = trim(temp)
-        call execute_command_line('mkdir "' // trim(run_dir) // '"', &
+        call execute_command_line('mkdir -p "' // trim(run_dir) // '"', &
                                   wait=.true., exitstat=mkdir_status)
         if (mkdir_status /= 0) then
             write (*, '(A)') '  WARNING: mkdir returned non-zero; run files may not be saved'
