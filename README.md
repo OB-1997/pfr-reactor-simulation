@@ -103,6 +103,15 @@ Stated openly, because knowing a model's validity envelope is part of the modell
 
 This is the same toolbox that underlies modern scientific machine learning: systems of ODEs and their integrators (neural ODEs), discretising PDEs on grids (physics-informed networks, simulation surrogates), stiffness and conditioning, convergence analysis, and the discipline of validating numerical code against known ground truth. The project demonstrates that toolbox end-to-end — model derivation, implementation in a compiled language, verification, benchmarking, and automated, reproducible experiments.
 
+## For students building on this work
+
+This repository is the archived, defended state of the thesis — it is not under active development, but it is designed to be built upon. If you are considering a follow-up project under doc. Zubov's supervision:
+
+- **Fork the repository** and work in your own copy; the per-project READMEs in [`code/`](code/) are written as complete user manuals, and every thesis figure is reproducible with two commands.
+- **Natural extension paths** (discussed at the defense): adding the energy balance — temperature T(x, t) as an eleventh state field — is the highest-value next step; a more detailed multi-component tar kinetic scheme is the second. The namelist-driven configuration and modular solver structure were built with these extensions in mind (see §6 of the [model README](code/isothermal_model/README.md) for what is runtime-configurable vs compile-time).
+- **Before trusting a new result**, re-run the analytical benchmark in [`code/simple_pfr_analytical_test/`](code/simple_pfr_analytical_test/) — if your changes touch the solvers or discretisation, it will tell you immediately whether you broke convergence.
+- **Cite this work** via the repository's [CITATION.cff](CITATION.cff) (GitHub's "Cite this repository" button), and feel free to reach out with questions via GitHub issues or the email below.
+
 ## Author
 
 **Ivan Hromakov** — ivan.gromakov@gmail.com
