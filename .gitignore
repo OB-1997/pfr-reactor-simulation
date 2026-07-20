@@ -1,0 +1,36 @@
+# --- OS / editor noise ---
+.DS_Store
+Thumbs.db
+*.swp
+
+# --- Python ---
+__pycache__/
+*.pyc
+.venv/
+
+# --- Fortran build artifacts ---
+code/*/build/
+*.o
+*.mod
+code/isothermal_model/prototype
+code/isothermal_model/prototype.exe
+code/simple_pfr_analytical_test/pfr_simple
+code/simple_pfr_analytical_test/pfr_simple.exe
+
+# --- Regenerable simulation data (hundreds of MB) ---
+# Raw solver output; regenerate with the orchestrators in runs/ (see per-project READMEs)
+code/*/output/
+code/isothermal_model/plots/[viewer_output]/
+
+# --- LaTeX auxiliary files ---
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.synctex.gz
+*.toc

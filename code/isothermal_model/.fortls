@@ -1,0 +1,7 @@
+{
+  "source_dirs": ["src"],
+  "excl_paths": ["build", "output", "plots", "lib"],
+  "incl_suffixes": [".f90", ".F90"],
+  "lowercase_intrinsics": true,
+  "use_signature_help": true
+}

@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you reference this work, please cite it as below."
+title: "Dynamic Modelling of Tubular Reactor for Conversion of Pyrolytic Gas"
+type: software
+authors:
+  - family-names: Hromakov
+    given-names: Ivan
+    email: ivan.gromakov@gmail.com
+year: 2026
+institution:
+  name: "University of Chemistry and Technology, Prague (VŠCHT Praha)"
+notes: >
+  Bachelor thesis, Department of Chemical Engineering, supervised by
+  doc. Ing. Alexandr Zubov, Ph.D. Includes a Fortran 2018 finite-volume
+  simulator of a tubular reformer with Python experiment orchestration.

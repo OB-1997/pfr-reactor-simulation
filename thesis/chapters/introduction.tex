@@ -1,0 +1,13 @@
+% ===========================================================================
+% chapters/introduction.tex — Introduction
+% ===========================================================================
+
+\chapter*{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+\markboth{INTRODUCTION}{INTRODUCTION}
+
+Pyrolytic gas is a tar-laden by-product of the thermal treatment of solid waste streams: a hot mixture of methane, light hydrocarbons, aromatic intermediates, and combustion fragments that must be either reformed into a usable fuel or burned off. Reforming the tar component into hydrogen-rich syngas turns the waste stream into an industrial feedstock; an industrial interest in exactly this transformation motivated the present work. The reactor that does this is a non-catalytic tubular reformer operated near \SI{900}{\degreeCelsius}, with staged side-stream injection of oxygen and steam along its length. The thesis develops a dynamic mathematical model of this reactor, exercises it across an engineering operating envelope, and benchmarks three time-integration algorithms on the resulting stiff convection--diffusion--reaction system.
+
+The chemistry of high-temperature thermal reforming is documented at two ends of the complexity spectrum: detailed elementary mechanisms with hundreds of species and thousands of reactions on one side, and single-lump cracking models with two or three pseudo-species on the other. Both are unsuitable for repeated reactor-scale simulation --- the first because of integration cost, the second because it cannot distinguish partial oxidation from steam reforming. This thesis adopts an intermediate lumped scheme of ten species and eight global reactions. The reactor model uses a finite-volume discretisation of the convection--diffusion--reaction equations on a one-dimensional plug-flow geometry, and the resulting semi-discrete system is benchmarked against three time-integration algorithms: forward Euler, backward Euler, and the variable-order Backward Differentiation Formula (BDF) integrator DLSODE.
+
+The first chapter reviews the kinetic-model literature and selects the adopted eight-reaction scheme. The second develops the plug-flow reactor model and the first-order upwind finite-volume discretisation. The third assembles the full mathematical model and introduces the three time-integration algorithms. The fourth presents the engineering steady-state profiles, parametric studies, solver benchmarks, and a solver recommendation. The final chapter recaps the findings and identifies the next steps.

@@ -1,0 +1,21 @@
+
+=== Smoke run (output/odepack_1) ===
+  Nstep = 201, N_cells = 100, t in [0.00, 200.00] s
+  [smoke] max |C_A + C_B - C_A_in| at t_end = 2.200e-05  -> OK (tol 1e-04)
+  [smoke] max |C(t_end) - C(t_end-dt)| = 2.000e-06     (1.00 s apart) -> OK (tol 1e-04)
+
+=== Reference run (output/odepack_2) ===
+  Nstep = 41, N_cells = 1000, t in [0.00, 200.00] s
+  [ref] max |C_A + C_B - C_A_in| at t_end = 5.000e-06  -> OK (tol 1e-04)
+  [ref] max |C(t_end) - C(t_end-dt)| = 0.000e+00     (5.00 s apart) -> OK (tol 1e-04)
+  [ref] Pe = 1032.00, Da = 1.0078
+  [ref] sample (mid cell, x* = 0.5005):
+           sim                = 6.2819
+           Dirichlet/Neumann  = 6.2834     (matches discrete BCs)
+           Wehner-Wilhelm     = 6.2773     (closed-closed Danckwerts)
+           plug-flow limit    = 6.2804     (Pe -> infinity)
+  [ref] max-norm rel error vs Dirichlet/Neumann = 9.747e-04
+  [ref] max-norm rel error vs Wehner-Wilhelm    = 1.951e-03
+  -> OK (tol 5e-03; plan expects ~1e-3 at N=1000)
+
+OVERALL: PASS

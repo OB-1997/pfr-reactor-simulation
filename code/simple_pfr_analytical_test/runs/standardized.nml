@@ -1,0 +1,26 @@
+! ==============================================================================
+! standardized.nml — defaults for the simple A -> B PFR baseline.
+! ==============================================================================
+! Geometry / velocity / D_ax mirror Table 3.1 of the real isothermal model so
+! Pe_L = u L / D_ax ~ 1032 is identical. k_rxn is a compile-time constant
+! (params.f90), not a namelist override; with these settings Da = k_rxn*L/u
+! ~ 1.008 and the residence time tau = L/u ~ 38.8 s.
+!
+!     ./pfr_simple --solver=odepack --config=runs/standardized.nml
+! ==============================================================================
+
+&reactor
+    L_reactor = 20.0       ! reactor length [m]
+    d_reactor = 0.60       ! tube internal diameter [m]
+    u_vel     = 0.516      ! superficial gas velocity [m/s]
+    T_react   = 1173.15    ! kept for namelist compatibility; unused in simple model
+    P_react   = 101325.0   ! kept for namelist compatibility; unused in simple model
+    D_ax      = 1.0e-2     ! axial dispersion coefficient [m^2/s]
+    N_cells   = 100        ! number of finite volumes
+/
+
+&time_window
+    t_start = 0.0
+    t_end   = 200.0        ! well past tau (~38.8 s) — reaches steady state
+    dt_out  = 1.0
+/

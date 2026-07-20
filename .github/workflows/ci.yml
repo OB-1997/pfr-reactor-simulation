@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  fortran-build-and-smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install toolchain
+        run: sudo apt-get update && sudo apt-get install -y gfortran make python3-numpy python3-matplotlib
+
+      - name: Build isothermal model
+        working-directory: code/isothermal_model
+        run: make
+
+      - name: Build analytical benchmark
+        working-directory: code/simple_pfr_analytical_test
+        run: make
+
+      - name: Smoke test — analytical benchmark to steady state
+        working-directory: code/simple_pfr_analytical_test
+        run: ./pfr_simple --solver=odepack --config=runs/standardized.nml
+
+      - name: Smoke test — full model, coarse grid
+        working-directory: code/isothermal_model
+        run: |
+          cat > ci_smoke.nml <<'EOF'
+          &reactor
+              N_cells = 50
+          /
+          &time_window
+              t_end  = 5.0
+              dt_out = 1.0
+          /
+          EOF
+          ./prototype --solver=odepack --config=ci_smoke.nml
+
+      - name: Python scripts compile
+        run: python3 -m py_compile code/fvm_python_prototype/main.py code/simple_pfr_analytical_test/*.py code/isothermal_model/runs/*.py code/isothermal_model/plots/*.py

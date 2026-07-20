@@ -1,0 +1,281 @@
+% =============================================================================
+% chapters/kinetic_model.tex — Selection of the Kinetic Model
+% =============================================================================
+\chapter{Selection of the Kinetic Model}\label{ch:kinetic_model}
+
+The kinetic model adopted in this work comprises 8 global reactions and approximately 10 species, employing three surrogate hydrocarbons: methane as a representative of aliphatic compounds, \(\alpha\)-methylstyrene as a representative of heavy aromatic tar, and benzene as an intermediate aromatic product. The model captures five distinct chemical phenomena: partial oxidation, steam reforming, hydrodealkylation, soot formation, and soot gasification.
+
+Its design reflects the primary objective of the thesis: comparing numerical algorithms for solving reactor models based on their computational time, which requires a kinetic scheme that is complex enough to produce a meaningfully stiff system of equations, yet compact enough so that the chemistry does not dominate the total computation. To substantiate this choice, six alternative modelling approaches are reviewed below and evaluated against the criteria of computational tractability, physical fidelity, and suitability for algorithm benchmarking.
+
+\section{Detailed elementary mechanisms}\label{sec:detailed_mechanisms}
+
+Detailed kinetic mechanisms describe the reaction system at the level of individual elementary reactions. They explicitly track radical intermediates, pathways of polycyclic aromatic hydrocarbon (PAH) formation, and subsequent soot precursors. Such models aim to represent the underlying chemistry as comprehensively as possible. A well-known example is GRI-Mech~3.0~\cite{GRIMech}, originally developed for methane combustion. The mechanism contains 53 species and 325 reactions. However, it does not include aromatic species heavier than~\(\mathrm{C_3}\), which limits its applicability to tar conversion and PAH growth processes relevant for pyrolytic gas. More comprehensive mechanisms have been proposed for high-temperature aromatic chemistry. Norinaga \textit{et al.}~\cite{Norinaga2011} developed a Detailed Chemical Kinetic Model (DCKM) comprising more than 500 species and approximately 8\,000 elementary reactions. The model was validated against the experimental data of Jess~\cite{Jess1996} for benzene, toluene, and naphthalene conversion in tubular reactors at 800--1400~\si{\degreeCelsius}. Similarly, the CRECK mechanism by Ranzi \textit{et al.}~\cite{Ranzi2014} includes 509 species and 20\,240 reactions and was designed for coupled biomass pyrolysis and secondary gas-phase reactions. Although such mechanisms capture the relevant chemistry in great detail, they lead to large and stiff systems of equations with timescales spanning nanoseconds to seconds. Their solution requires implicit solvers with repeated Jacobian evaluations, and the computational cost increases rapidly with species number. As a result, integration times of hours to days make these mechanisms unsuitable for repeated simulations and algorithm benchmarking within the scope of this work.
+
+\section{Skeletal and reduced mechanisms}\label{sec:skeletal_mechanisms}
+
+Systematic reduction techniques such as the Directed Relation Graph (DRG) method and quasi-steady-state approximations yield skeletal mechanisms of 20--120 reactions. DRM-19 and DRM-22, reduced from GRI-Mech~\cite{GRIMech}, retain 19--22 species but contain no aromatics, tar, or soot chemistry. The Jones and Lindstedt~\cite{JonesLindstedt1988} 4-step global mechanism (\(\sim\)7 species, 4 reactions) is widely used in CFD for hydrocarbon combustion yet lacks any aromatic or soot pathway. A 39-species skeletal mechanism generates a Jacobian matrix approximately 25 times larger than the \(\sim\)10-species system of the adopted model, substantially increasing cost per integration step without contributing information relevant to the thesis objectives.
+
+\section{Single-lump tar models}\label{sec:single_lump}
+
+At the lower bound of complexity, single-lump models treat tar as one pseudo-species undergoing first-order thermal cracking. Boroson \textit{et al.}~\cite{Boroson1989} modelled wood pyrolysis tar as a single lump at 500--800~\si{\degreeCelsius}, and Fagbemi \textit{et al.}~\cite{Fagbemi2001} applied a similar one-reaction scheme (tar \(\to\) gas + soot) for three biomass types at 400--900~\si{\degreeCelsius}. With only 2--3 species and 1 reaction, these models can be numerically solved, but cannot distinguish partial oxidation from steam reforming and omit hydrodealkylation entirely.
+
+\section{The adopted 8-reaction lumped model}\label{sec:adopted_model}
+
+This model builds upon the work of Jess~\cite{Jess1996}, who reported global Arrhenius kinetics for the thermal conversion of naphthalene, toluene, and benzene in a tubular reactor at 700--1400~\si{\degreeCelsius} and \SI{160}{\kilo\pascal}, with activation energies of 247, 350, and \SI{493}{\kilo\joule\per\mole}, respectively. His experiments also showed strong inhibition of soot formation by hydrogen, while steam had only a minor direct effect on aromatic conversion rates.
+
+In the present formulation, \(\alpha\)-methylstyrene is adopted as the heavy aromatic surrogate, replacing toluene and naphthalene. Three partial oxidation reactions~\eqref{eq:rxn1}--\eqref{eq:rxn3} use kinetic parameters from Smoot and Pratt~\cite{SmootPratt1979}, later validated for biomass-derived tar by Su \textit{et al.}~\cite{Su2011}. Methane steam reforming~\eqref{eq:rxn4} follows Jones and Lindstedt~\cite{JonesLindstedt1988}; benzene steam reforming with soot formation~\eqref{eq:rxn5} and soot gasification~\eqref{eq:rxn8} are taken from Jess~\cite{Jess1996}; and \(\alpha\)-methylstyrene steam reforming~\eqref{eq:rxn6} together with hydrodealkylation~\eqref{eq:rxn7} are based on Taralas \textit{et al.}~\cite{Taralas2003}. Umeki \textit{et al.}~\cite{Umeki2012} further demonstrated that a closely related reduced scheme provides satisfactory predictions for biomass gasification.
+
+The resulting \(\sim\)10-species, 8-reaction system forms a coupled and stiff problem, where fast partial oxidation competes with much slower steam reforming reactions. This creates a computational regime in which the choice of numerical method (explicit vs.\ implicit, adaptive vs.\ fixed step) has a measurable impact on solution time, making the model suitable for a numerical algorithm comparison.
+
+\section{Multi-component tar models}\label{sec:multicomponent}
+
+Multi-component approaches track 4--13 individual tar species classified according to the Evans and Milne~\cite{EvansMilne1987} maturation scheme (primary oxygenates through condensed tertiary PAHs). Morf \textit{et al.}~\cite{Morf2002} provided detailed experimental characterisation of homogeneous secondary tar reactions in a tubular reactor at 500--1000~\si{\degreeCelsius}. Salem \textit{et al.}~\cite{Salem2019} implemented 4 tar species with 18 reactions in a downdraft gasifier model, noting that benzene, naphthalene, toluene, and phenol together represent 70--95\,\% of all tar species. Fuentes-Cano \textit{et al.}~\cite{FuentesCano2016} developed a lumped tar-class model that quantitatively predicts tar yields at 700--1000~\si{\degreeCelsius}. Dufour \textit{et al.}~\cite{Dufour2011} established that \ce{CH4} production is controlled primarily by aromatic demethylation --- a finding that directly supports the hydrodealkylation pathway (reaction~\eqref{eq:rxn7}) in the adopted model. These multi-component schemes (15--30 species, 18--27 reactions) provide improved tar speciation at 3--10 times the computational cost of the 8-reaction model, an overhead that is justified for process design but counterproductive for numerical algorithm benchmarking.
+
+\section{Equilibrium models}\label{sec:equilibrium}
+
+Thermodynamic equilibrium models based on Gibbs free energy minimisation predict zero tar at all gasification temperatures, since aromatic hydrocarbons are thermodynamically unstable above approximately \SI{600}{\degreeCelsius}. In practice, tar persists because its destruction is kinetically controlled: typical residence times of 1--5~s at \SI{900}{\degreeCelsius} are insufficient for complete conversion. Equilibrium approaches also overestimate \ce{H2} and \ce{CO} yields by 10--50\,\% and underestimate \ce{CH4}. Modified approaches such as the constrained free energy method of Kangas \textit{et al.}~\cite{Kangas2014} partially address these shortcomings by introducing empirical corrections, but in doing so sacrifice the generality that constitutes equilibrium modelling's principal advantage. More fundamentally, equilibrium models contain no time dimension and are therefore incompatible with the dynamic, non-isothermal tubular reactor framework of this thesis.
+
+\section{Empirical and data-driven models}\label{sec:empirical}
+
+Empirical correlations and machine learning models relate product yields directly to operating parameters. While computationally inexpensive, they provide no mechanistic insight, cannot extrapolate beyond their calibration range, and --- critically --- contain no differential equations. They are therefore irrelevant to a thesis concerned with comparing various numerical solvers suitable for modelling of dynamics in a tubular reactor.
+
+\section{Summary}\label{sec:kinetic_conclusion}
+
+The 8-reaction lumped model represents the minimum-complexity kinetic framework that captures the complete phenomenology of non-catalytic thermal reforming at \(\sim\)\SI{900}{\degreeCelsius}. Models of lower complexity (equilibrium, single-lump, empirical) sacrifice essential physics: equilibrium cannot predict tar; single-lump schemes omit hydrodealkylation and partial oxidation selectivity; empirical models contain no equations to solve. Models of higher complexity (skeletal, detailed) introduce chemical detail that, while scientifically valuable, would dominate total computation time and obscure the numerical algorithm comparison that constitutes the thesis's core contribution. The literature confirms that lumped kinetic models at this level of complexity --- validated by Jess~\cite{Jess1996}, extended by Umeki \textit{et al.}~\cite{Umeki2012}, and corroborated by the tar-class work of Fuentes-Cano \textit{et al.}~\cite{FuentesCano2016} and the review of Savage~\cite{Savage2000} --- provide predictions sufficiently accurate for reactor-scale simulation while remaining computationally tractable for systematic solver benchmarking.
+
+\section{Kinetic Rate Expressions}\label{sec:kinetic_rates}
+
+\subsection{Partial oxidation reactions}\label{ssec:partial_oxidation}
+
+The partial oxidation kinetics follow the global scheme of Smoot and Pratt~\cite{SmootPratt1979}. The original kinetic data were derived from coal pyrolysis gas containing \SI{42.3}{\mole\percent} methane with the remainder consisting of other (unspecified) hydrocarbons. The activation energy of hydrocarbon oxidation in this framework ranges from 80 to \SI{150}{\kilo\joule\per\mole}, and the reaction order with respect to the hydrocarbon species ranges from 0.5 to~1. It is assumed that all three surrogate hydrocarbons react with oxygen at comparable rates.
+
+The generalised reaction is
+%
+\begin{equation}
+  \ce{C_{n}H_{m}} + \frac{n}{2}\,\ce{O2} \longrightarrow n\,\ce{CO} + \frac{m}{2}\,\ce{H2}
+  \label{eq:gen_partial_ox}
+\end{equation}
+%
+with Arrhenius-type rate expression
+%
+\begin{equation}
+  r_i = A_i \exp\!\Bigl(-\frac{E_i}{RT}\Bigr)\,[\text{fuel}]\,[\ce{O2}]
+  \label{eq:partial_ox_rate}
+\end{equation}
+
+\paragraph{Methane partial oxidation.}
+%
+\begin{equation}
+  \ce{CH4 + \frac{1}{2} O2 -> CO + 2 H2}
+  \label{eq:rxn1}
+\end{equation}
+%
+Using the parameters for long-chain hydrocarbons:
+%
+\begin{align}
+  A_1 &= \SI{59.8}{\metre\cubed\per\mole\per\second} \label{eq:A1} \\
+  E_1 &= \SI{101.4}{\kilo\joule\per\mole}. \label{eq:E1}
+\end{align}
+
+\paragraph{Benzene partial oxidation.}
+%
+\begin{equation}
+  \ce{C6H6 + 3 O2 -> 6 CO + 3 H2}
+  \label{eq:rxn2}
+\end{equation}
+%
+Using cyclic hydrocarbon parameters:
+%
+\begin{align}
+  A_2 &= \SI{2.07e4}{\metre\cubed\per\mole\per\second} \label{eq:A2} \\
+  E_2 &= \SI{80.2}{\kilo\joule\per\mole}. \label{eq:E2}
+\end{align}
+
+\paragraph{\(\alpha\)-Methylstyrene partial oxidation.}
+%
+\begin{equation}
+  \ce{C9H10 + \frac{9}{2} O2 -> 9 CO + 5 H2}
+  \label{eq:rxn3}
+\end{equation}
+%
+Assuming aromatic behaviour consistent with cyclic hydrocarbons:
+%
+\begin{align}
+  A_3 &= \SI{2.07e4}{\metre\cubed\per\mole\per\second} \label{eq:A3} \\
+  E_3 &= \SI{80.2}{\kilo\joule\per\mole}. \label{eq:E3}
+\end{align}
+
+\subsection{Steam reforming of methane}\label{ssec:steam_reforming_CH4}
+
+The steam reforming of methane is represented by the global reaction
+%
+\begin{equation}
+  \ce{CH4 + H2O -> CO + 3 H2}
+  \label{eq:rxn4}
+\end{equation}
+
+Jones and Lindstedt~\cite{JonesLindstedt1988} determined the kinetics of alkane reactions in a mixture with air by analysing the flame structure. While the oxidation kinetics derived from flame conditions cannot be directly applied to a tubular reformer model, the steam reforming kinetics remain transferable, as the underlying gas-phase fuel breakdown chemistry is not specific to the flame environment. In general, the steam reforming reaction is many times slower than partial oxidation, and light hydrocarbons react more readily with steam than do aromatic species.
+
+For methane (\(n = 1\)), the forward rate is given by
+%
+\begin{equation}
+  r_4 = k_4(T)\,[\ce{CH4}]\,[\ce{H2O}]
+  \label{eq:rate4}
+\end{equation}
+%
+with the Arrhenius temperature dependence
+%
+\begin{equation}
+  k_4(T) = A_4\, T^{b_4} \exp\!\Bigl(-\frac{E_4}{RT}\Bigr).
+  \label{eq:k4}
+\end{equation}
+%
+For methane, the kinetic parameters are
+%
+\begin{align}
+  A_4 &= \SI{3.0e8}{\metre\cubed\per\mole\per\second} \label{eq:A4} \\
+  b_4 &= 0 \label{eq:b4} \\
+  E_4 &= \SI{30000}{cal\per\mole}, \label{eq:E4_cal}
+\end{align}
+%
+which corresponds to an activation energy of
+%
+\begin{equation}
+  E_4 = \SI{125.5}{\kilo\joule\per\mole}.
+  \label{eq:E4}
+\end{equation}
+
+The reaction is first order with respect to methane and first order with respect to steam, resulting in an overall second-order rate expression, consistent with the general observation that steam reforming of light hydrocarbons follows second-order kinetics. This kinetic formulation represents a global gas-phase fuel breakdown step calibrated for high-temperature flame conditions rather than a catalytic steam reforming mechanism.
+
+\subsection{Steam reforming of benzene}\label{ssec:steam_reforming_benzene}
+
+The steam reforming of benzene with concurrent soot formation is represented by
+%
+\begin{equation}
+  \ce{C6H6 + 2 H2O -> 2 CO + \frac{5}{2} CH4 + \frac{3}{2} C}
+  \label{eq:rxn5}
+\end{equation}
+%
+Jess~\cite{Jess1996} reported an activation energy of \SI{493}{\kilo\joule\per\mole} for the steam reforming of benzene; however, the value used in the present model is reduced by \SI{50}{\kilo\joule\per\mole} to \SI{443}{\kilo\joule\per\mole}. This adjustment is necessary because, with the original activation energy, the reaction does not proceed in the model and no soot is formed, which contradicts the experimental observation that soot formation does occur under the relevant conditions. The modification falls within the accepted uncertainty range of \(\pm\SI{100}{\kilo\joule\per\mole}\) for global kinetic parameters of this type. This reaction constitutes the sole pathway for soot formation in the model. At a temperature of \SI{900}{\degreeCelsius} and in the absence of polycyclic aromatic hydrocarbons (naphthalene, pyrene), a large amount of soot is not expected, but it cannot be completely neglected. The steam reforming of aromatic species follows approximately first-order kinetics with respect to the aromatic concentration (the fitted exponent for benzene is~1.3, see \cref{eq:rate5}), in contrast to the second-order dependence observed for light hydrocarbons.
+
+%
+The global rate expression for benzene conversion is
+%
+\begin{equation}
+  r_5 = k_5(T)\,{[\ce{C6H6}]}^{1.3}\,{[\ce{H2}]}^{-0.4}\,{[\ce{H2O}]}^{0.2}
+  \label{eq:rate5}
+\end{equation}
+%
+with
+%
+\begin{equation}
+  k_5(T) = A_5 \exp\!\Bigl(-\frac{E_5}{RT}\Bigr)
+  \label{eq:k5}
+\end{equation}
+%
+and kinetic parameters
+%
+\begin{align}
+  A_5 &= \SI{2.0e16}{\mole^{-0.1}\,\metre^{0.3}\,\per\second} \label{eq:A5} \\
+  E_5 &= \SI{443}{\kilo\joule\per\mole}. \label{eq:E5}
+\end{align}
+
+The reaction exhibits a strong temperature dependence and a weak positive dependence on steam concentration, while hydrogen inhibits benzene conversion.
+
+\subsection{Steam reforming of \texorpdfstring{\(\alpha\)}{alpha}-methylstyrene}\label{ssec:steam_reforming_AMS}
+
+The steam reforming of the heavy aromatic surrogate is represented by
+%
+\begin{equation}
+  \ce{C9H10 + 11.5 H2O -> 6.5 CO + 2.5 CO2 + 16.5 H2}
+  \label{eq:rxn6}
+\end{equation}
+
+Taralas \textit{et al.}~\cite{Taralas2003} investigated thermal destruction of toluene in a tubular flow reactor at 973--1223~K under conditions similar to those of the present model. This reaction is the only source of \ce{CO2} in the model. In the original study, equal stoichiometric amounts of \ce{CO} and \ce{CO2} are formed. The stoichiometry adopted here was adjusted so that less \ce{CO2} is produced, in order to match the gas composition obtained from thermodynamic equilibrium calculations in Aspen Plus. This adjustment compensates for the absence of the reverse water-gas shift reaction in the model. Assuming first-order dependence with respect to the aromatic species and excess steam conditions, the rate expression is written as
+
+%
+\begin{equation}
+  r_6 = k_6(T)\,[\ce{C9H10}]
+  \label{eq:rate6}
+\end{equation}
+%
+with Arrhenius temperature dependence
+%
+\begin{equation}
+  k_6(T) = A_6 \exp\!\Bigl(-\frac{E_6}{RT}\Bigr)
+  \label{eq:k6}
+\end{equation}
+%
+where
+%
+\begin{align}
+  A_6 &= \SI{2.3e15}{\per\second} \label{eq:A6} \\
+  E_6 &= \SI{356}{\kilo\joule\per\mole}. \label{eq:E6}
+\end{align}
+
+The high activation energy reflects the refractory nature of aromatic steam reforming reactions.
+
+\subsection{Hydrodealkylation of \texorpdfstring{\(\alpha\)}{alpha}-methylstyrene}\label{ssec:hydrodealkylation}
+
+Hydrodealkylation is described by
+%
+\begin{equation}
+  \ce{C9H10 + 4 H2 -> 3 CH4 + C6H6}
+  \label{eq:rxn7}
+\end{equation}
+%
+Taralas \textit{et al.}~\cite{Taralas2003} studied toluene destruction under both oxidative and reducing atmospheres at conditions similar to those of the present model. The rate expression follows a first-order dependence on the aromatic species and half-order dependence on the hydrogen-containing mixture:
+
+%
+\begin{equation}
+  r_7 = k_7(T)\,[\ce{C9H10}]\,{[\ce{H2}]}^{0.5}
+  \label{eq:rate7}
+\end{equation}
+%
+with Arrhenius form
+%
+\begin{equation}
+  k_7(T) = A_7 \exp\!\Bigl(-\frac{E_7}{RT}\Bigr)
+  \label{eq:k7}
+\end{equation}
+%
+and kinetic parameters
+%
+\begin{align}
+  A_7 &= \SI{3.3e10}{\mole^{-0.5}\,\metre^{1.5}\,\per\second} \label{eq:A7} \\
+  E_7 &= \SI{250}{\kilo\joule\per\mole}. \label{eq:E7}
+\end{align}
+
+The presence of hydrogen lowers the activation energy by approximately \SI{100}{\kilo\joule\per\mole} compared to steam reforming conditions, leading to significantly faster aromatic conversion.
+
+\subsection{Soot gasification}\label{ssec:soot_gasification}
+
+The heterogeneous gasification of soot is described by
+%
+\begin{equation}
+  \ce{C + H2O -> CO + H2}
+  \label{eq:rxn8}
+\end{equation}
+
+Because soot is a solid phase, the volumetric rate depends on both the steam concentration and the local soot mass concentration \(\rho_{\mathrm{soot}}\)~\([\si{\kilogram\per\metre\cubed}]\):
+%
+\begin{equation}
+  r_8 = k_8(T)\,\rho_{\mathrm{soot}}\,[\ce{H2O}]
+  \label{eq:rate8}
+\end{equation}
+%
+with Arrhenius dependence
+%
+\begin{equation}
+  k_8(T) = A_8 \exp\!\Bigl(-\frac{E_8}{RT}\Bigr).
+  \label{eq:k8}
+\end{equation}
+%
+The kinetic parameters determined by Jess~\cite{Jess1996} are
+%
+\begin{align}
+  A_8 &= \SI{3.0e11}{\metre\cubed\,\per\kilogram\,\per\second} \label{eq:A8} \\
+  E_8 &= \SI{310}{\kilo\joule\per\mole}. \label{eq:E8}
+\end{align}
+
+The soot gasification step is first order with respect to steam and strongly temperature dependent. Because this reaction is slow relative to the other steps in the model, sufficient excess steam must be supplied to the reactor for the gasification of deposited soot to proceed at a meaningful rate. Without adequate steam, any soot formed by reaction~\eqref{eq:rxn5} would accumulate along the reactor length.

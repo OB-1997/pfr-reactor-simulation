@@ -1,0 +1,80 @@
+% ===========================================================================
+% chapters/symbols_and_abbreviations.tex — List of Symbols + List of Abbreviations
+% ===========================================================================
+
+\chapter*{List of Symbols}
+\addcontentsline{toc}{chapter}{List of Symbols}
+\markboth{LIST OF SYMBOLS}{LIST OF SYMBOLS}
+
+\begin{longtable}{@{} p{0.16\textwidth} p{0.60\textwidth} p{0.18\textwidth} @{}}
+\(A\)                   & cross-sectional area                                              & \si{\square\metre}                                  \\
+\(C_i\)                 & molar concentration of species \(i\)                              & \si{\mole\per\cubic\metre}                          \\
+\(C_{i,\mathrm{in}}\)   & inlet concentration of species \(i\)                              & \si{\mole\per\cubic\metre}                          \\
+\(C_{\mathrm{tot}}\)    & total molar concentration                                         & \si{\mole\per\cubic\metre}                          \\
+\(d\)                   & tube internal diameter                                            & \si{\metre}                                         \\
+\(D_{AB}\)              & molecular diffusivity of species A in B                           & \si{\square\metre\per\second}                       \\
+\(D_{\mathrm{ax}}\)     & axial dispersion coefficient                                      & \si{\square\metre\per\second}                       \\
+\(D_{\mathrm{num}}\)    & numerical (artificial) diffusion coefficient                      & \si{\square\metre\per\second}                       \\
+\(\mathrm{Da}\)         & Damk\"ohler number                                                & ---                                                 \\
+\(E_i\)                 & activation energy of reaction \(i\)                               & \si{\kilo\joule\per\mole}                           \\
+\(E(t)\)                & residence-time distribution function                              & \si{\per\second}                                    \\
+\(F^{\mathrm{c}}\)      & convective molar flux at a cell face                              & \si{\mole\per\square\metre\per\second}              \\
+\(F^{\mathrm{d}}\)      & diffusive molar flux at a cell face                               & \si{\mole\per\square\metre\per\second}              \\
+\(F_{\mathrm{scale}}\)  & global side-injection mass-flow multiplier                        & ---                                                 \\
+\(\mathbf{f}\)          & right-hand-side vector of the semi-discrete ODE system            & \si{\mole\per\cubic\metre\per\second}               \\
+\(\mathbf{g}\)          & Newton residual vector                                            & \si{\mole\per\cubic\metre}                          \\
+\(\mathbf{J}\)          & Jacobian matrix                                                   & varies                                              \\
+\(k_i(T)\)              & temperature-dependent rate constant of reaction \(i\)             & varies                                              \\
+\(L\)                   & reactor length                                                    & \si{\metre}                                         \\
+\(\mathrm{mf}\)         & DLSODE method flag                                                & ---                                                 \\
+\(\mathrm{ML}\)         & lower half-bandwidth of the Jacobian                              & ---                                                 \\
+\(\mathrm{MU}\)         & upper half-bandwidth of the Jacobian                              & ---                                                 \\
+\(N_{\mathrm{cells}}\)  & number of finite-volume cells                                     & ---                                                 \\
+\(N_{\mathrm{eqs}}\)    & total number of ODE equations                                     & ---                                                 \\
+\(N_s\)                 & number of species                                                 & ---                                                 \\
+\(P\)                   & total pressure                                                    & \si{\pascal}                                        \\
+\(\mathrm{Pe}\)         & P\'eclet number                                                   & ---                                                 \\
+\(\mathrm{Pe}_{\mathrm{cell}}\) & cell P\'eclet number                                      & ---                                                 \\
+\(\mathrm{Pe}_d\)       & Bodenstein number                                                 & ---                                                 \\
+\(r_i\)                 & net volumetric production rate of species \(i\)                   & \si{\mole\per\cubic\metre\per\second}               \\
+\(R\)                   & universal gas constant                                            & \si{\joule\per\mole\per\kelvin}                     \\
+\(\mathrm{Re}\)         & Reynolds number                                                   & ---                                                 \\
+\(\mathrm{rtol}\)       & relative tolerance of the adaptive integrator                     & ---                                                 \\
+\(\mathrm{atol}\)       & absolute tolerance of the adaptive integrator                     & ---                                                 \\
+\(S_{i,j}\)             & side-injection source term for species \(i\) in cell \(j\)        & \si{\mole\per\cubic\metre\per\second}               \\
+\(T\)                   & reactor temperature                                               & \si{\kelvin}                                        \\
+\(t\)                   & time                                                              & \si{\second}                                        \\
+\(t_{\mathrm{end}}\)    & integration time horizon                                          & \si{\second}                                        \\
+\(u\)                   & inlet feed velocity                                               & \si{\metre\per\second}                              \\
+\(V\)                   & cell volume                                                       & \si{\cubic\metre}                                   \\
+\(x\)                   & axial coordinate                                                  & \si{\metre}                                         \\
+\(\mathbf{y}\)          & state vector of all species concentrations                        & \si{\mole\per\cubic\metre}                          \\
+\(y_{i,\mathrm{in}}\)   & inlet mole fraction of species \(i\)                              & ---                                                 \\
+\(\beta\)               & characteristic-root intermediate variable                         & ---                                                 \\
+\(\Delta t\)            & time step                                                         & \si{\second}                                        \\
+\(\Delta x\)            & finite-volume cell width                                          & \si{\metre}                                         \\
+\(\lambda_\pm\)         & characteristic equation eigenvalues                               & ---                                                 \\
+\(\nu\)                 & kinematic viscosity                                               & \si{\square\metre\per\second}                       \\
+\(\rho_{\mathrm{soot}}\)& soot mass concentration                                           & \si{\kilo\gram\per\cubic\metre}                     \\
+\(\sigma\)              & Taylor smearing distance                                          & \si{\metre}                                         \\
+\(\tau\)                & mean residence time                                               & \si{\second}                                        \\
+\end{longtable}
+
+\chapter*{List of Abbreviations}
+\addcontentsline{toc}{chapter}{List of Abbreviations}
+\markboth{LIST OF ABBREVIATIONS}{LIST OF ABBREVIATIONS}
+
+\begin{longtable}{@{} p{0.16\textwidth} p{0.78\textwidth} @{}}
+AI       & artificial intelligence                                                 \\
+BDF      & backward differentiation formula                                        \\
+CFL      & Courant--Friedrichs--Lewy (number / stability condition)                \\
+CSTR     & continuous stirred-tank reactor                                         \\
+FVM      & finite-volume method                                                    \\
+GRI-Mech & Gas Research Institute methane mechanism                                \\
+ODE      & ordinary differential equation                                          \\
+ODEPACK  & Hindmarsh's package of ODE solvers                                      \\
+PAH      & polycyclic aromatic hydrocarbon                                         \\
+PDE      & partial differential equation                                           \\
+PFR      & plug-flow reactor                                                       \\
+RTD      & residence-time distribution                                             \\
+\end{longtable}

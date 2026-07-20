@@ -1,0 +1,130 @@
+% =============================================================================
+% preamble.tex — Package imports and custom commands
+% =============================================================================
+
+% --- Page layout ---
+\usepackage[left=3.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry}
+
+% --- Line spacing ---
+\usepackage{setspace}
+
+% --- Encoding and fonts ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[
+  activate={true,nocompatibility},  % enable protrusion and font expansion
+  tracking=true,                    % enable letter spacing adjustments
+  expansion=true,                   % allow glyph scaling for better line breaks
+  stretch=10,                       % max glyph stretch (per mille)
+  shrink=10                         % max glyph shrink  (per mille)
+]{microtype}
+
+% --- Language ---
+\usepackage[main=english,czech]{babel}
+
+% --- PDF inclusion (SIS title pages) ---
+\usepackage{pdfpages}
+
+% --- Mathematics ---
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}                    % bold math (e.g. \bm{\delta} for Newton correction)
+\DeclareMathSizes{12}{11}{8}{6}    % text=12pt: math=11pt, script=8pt, scriptscript=6pt
+
+% --- Chemistry ---
+\usepackage[version=4]{mhchem}
+
+% --- Units ---
+\usepackage{siunitx}
+\sisetup{
+  per-mode=symbol,
+  inter-unit-product=\ensuremath{{}\cdot{}}
+}
+
+% --- Graphics and figures ---
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[section]{placeins}   % prevents floats from spilling across section boundaries
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing}
+
+% --- Tables ---
+\usepackage{booktabs}
+\usepackage{longtable}             % for symbols / abbreviations lists spanning multiple pages
+
+% --- Figure/table captions at 9pt per supervisor's instruction ---
+\usepackage{caption}
+\DeclareCaptionFont{ninept}{\fontsize{9pt}{11pt}\selectfont}
+\captionsetup{font=ninept, labelfont={bf,ninept}}
+
+% --- Cross-references and links ---
+\usepackage[hypertexnames=false]{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!70!black,
+  citecolor=green!50!black,
+  urlcolor=blue!70!black
+}
+
+% --- Smart cross-references (cleveref must come AFTER hyperref) ---
+\usepackage{cleveref}
+\crefname{figure}{Figure}{Figures}
+\Crefname{figure}{Figure}{Figures}
+\crefname{table}{Table}{Tables}
+\Crefname{table}{Table}{Tables}
+\crefname{chapter}{Chapter}{Chapters}
+\Crefname{chapter}{Chapter}{Chapters}
+\crefname{section}{Section}{Sections}
+\Crefname{section}{Section}{Sections}
+\crefname{subsection}{Section}{Sections}
+\Crefname{subsection}{Section}{Sections}
+\crefname{subsubsection}{Section}{Sections}
+\Crefname{subsubsection}{Section}{Sections}
+\crefname{equation}{equation}{equations}
+\Crefname{equation}{Equation}{Equations}
+
+% --- Paragraph formatting ---
+\usepackage{parskip}
+
+% --- Page-break control ---
+\widowpenalty=10000          % NEVER allow single-line widow at top of next page
+\clubpenalty=10000           % NEVER allow single-line orphan at bottom of page
+\displaywidowpenalty=10000   % NEVER allow widow line before a displayed equation
+\predisplaypenalty=10000     % keep colon-led-in line glued to its equation (no page break)
+\postdisplaypenalty=500      % mild discouragement of page break just after equation
+\interlinepenalty=200        % discourage page breaks inside a paragraph
+\brokenpenalty=10000         % discourage page break after a hyphenated line
+
+% --- Avoid orphan section/paragraph headings ---
+% If less than N lines fit below a heading, push the heading to next page
+\usepackage{needspace}
+\usepackage{etoolbox}
+\preto{\section}{\needspace{6\baselineskip}}
+\preto{\subsection}{\needspace{5\baselineskip}}
+\preto{\subsubsection}{\needspace{4\baselineskip}}
+\preto{\paragraph}{\needspace{3\baselineskip}}
+
+% --- Line-break tolerance ---
+\tolerance=2000              % allow looser line spacing to avoid overfull boxes
+\emergencystretch=4em        % extra stretch before giving up on line breaking
+\hyphenpenalty=50             % encourage hyphenation over ugly word spacing
+\hfuzz=1.5pt                 % suppress overfull warnings under 1.5pt
+
+% --- Variable-height pages (essential with parskip) ---
+% Without \raggedbottom, LaTeX stretches inter-paragraph glue to fill pages,
+% which causes uneven spacing and "ripped"-looking page breaks.
+\raggedbottom
+
+% --- Custom commands ---
+\newcommand{\ddt}{\frac{\mathrm{d}}{\mathrm{d}t}}
+\newcommand{\ddx}{\frac{\partial}{\partial x}}
+\newcommand{\Dax}{D_{\mathrm{ax}}}
+\newcommand{\Cin}{C_{i,\mathrm{in}}}
+\newcommand{\Pe}{\mathrm{Pe}}
+\renewcommand{\Re}{\mathrm{Re}}      % Reynolds number (overrides built-in real-part operator)
+\newcommand{\Ri}{R_i(\vect{C}, T)}
+\newcommand{\vect}[1]{\mathbf{#1}}
+
+% --- Bibliography ---
+\usepackage{cite}

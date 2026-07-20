@@ -1,0 +1,14 @@
+&reactor
+    L_reactor = 20.0
+    d_reactor = 0.60
+    u_vel     = 0.516
+    T_react   = 1173.15
+    P_react   = 101325.0
+    D_ax      = 1.0e-2
+    N_cells   = 1000
+/
+&time_window
+    t_start = 0.0
+    t_end   = 200.0
+    dt_out  = 5.0
+/

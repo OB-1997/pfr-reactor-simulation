@@ -1,0 +1,13 @@
+% ===========================================================================
+% chapters/conclusions.tex — Conclusions
+% ===========================================================================
+
+\chapter*{Conclusions}
+\addcontentsline{toc}{chapter}{Conclusions}
+\markboth{CONCLUSIONS}{CONCLUSIONS}
+
+This thesis has developed and exercised a dynamic mathematical model of a non-catalytic tubular reformer for pyrolytic gas, and has benchmarked three time-integration algorithms on the resulting stiff convection--diffusion--reaction system. The work delivers three artefacts: a ten-species, eight-reaction lumped kinetic scheme calibrated for iso-thermal operation; a one-dimensional plug-flow reactor with staged side-stream injection, discretised by first-order upwind finite volumes; and an integrator recommendation that meets the spatial-discretisation accuracy floor at materially lower cost than the alternatives.
+
+The engineering results show a reactor with a narrow but real design margin. The temperature lever exposes a tar-clearance threshold just below the design point: at \(T = \SI{1073}{\kelvin}\) benzene steam reforming is too slow to consume the aromatic load within the available residence time, and a non-trivial tar-slip arrives at the outlet. The feed-velocity lever reveals two competing failure modes at the extremes --- over-oxidation at low feed velocity and under-conversion at high --- with the design value sitting in the narrow window between them. The side-injection flow-rate variation is the only one of the three with a non-monotonic optimum inside the tested range, and the design point sits close to that optimum. It is therefore the most directly actionable knob for any future parametric optimisation.
+
+The numerical results identify forward Euler at \(\Delta t = \SI{1}{\milli\second}\) as the cheapest integrator that meets the accuracy floor at the engineering-relevant grid. Backward Euler at a tuned \(\Delta t = \SI{100}{\milli\second}\) is faster still, at the cost of user-side stability tuning; DLSODE provides default-configuration robustness but is penalised on the present iso-thermal model by a BDF-order-collapse pathology at fine grids. The recommendation is therefore tied to the present kinetic scheme and operating point: a richer reaction mechanism or a coupled energy balance would tighten the explicit method's stability bound and shift the ranking toward the implicit alternatives. Both extensions are natural directions for follow-on work, and the parametric studies in this thesis define the operating range over which the resulting model should be tested.

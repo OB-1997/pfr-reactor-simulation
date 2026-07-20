@@ -1,0 +1,19 @@
+% ===========================================================================
+% chapters/summary.tex — Summary (EN) + Souhrn (CZ)
+% ===========================================================================
+
+\chapter*{Summary}
+\addcontentsline{toc}{chapter}{Summary}
+\markboth{SUMMARY}{SUMMARY}
+
+This thesis develops a dynamic mathematical model of a non-catalytic tubular reformer that converts pyrolytic gas into hydrogen-rich syngas. The model combines a ten-species, eight-reaction lumped kinetic scheme with a one-dimensional plug-flow reactor discretised by first-order upwind finite volumes; nine side-stream injectors deliver oxygen and steam at staged positions along the reactor. Three time-integration algorithms --- forward Euler, backward Euler, and the variable-order integrator DLSODE --- are benchmarked on the resulting stiff convection--diffusion--reaction system. Parametric studies vary reactor temperature, inlet feed velocity, and side-injection flow rate; the results reveal a narrow but real operating window around the design point, with the side-injection flow-rate variation exhibiting a single optimum. Forward Euler at the default time step is identified as the cheapest integrator that meets the spatial-discretisation accuracy floor at the engineering-relevant grid; the recommendation is tied to the present isothermal kinetic scheme.
+
+\selectlanguage{czech}
+
+\chapter*{Souhrn}
+\addcontentsline{toc}{chapter}{Souhrn}
+\markboth{SOUHRN}{SOUHRN}
+
+Tato práce vyvíjí dynamický matematický model nekatalytického trubkového reaktoru, který přeměňuje pyrolýzní plyn na syntézní plyn bohatý na vodík. Kinetické schéma s deseti složkami a osmi globálními reakcemi je spojeno s jednorozměrným modelem pístového reaktoru, prostorově diskretizovaným metodou konečných objemů s protisměrným schématem prvního řádu; podél osy reaktoru je rozmístěno devět bočních vstřiků dodávajících kyslík a vodní páru. Na vzniklém tuhém konvekčně-difúzně-reakčním systému jsou srovnány tři algoritmy časové integrace: explicitní Eulerova metoda, implicitní Eulerova metoda a integrátor DLSODE založený na metodě ``Backward Differentiation Formula'' (BDF) s proměnným řádem. Parametrické studie zkoumají vliv teploty reaktoru, vstupní rychlosti a průtoku bočních vstřiků; výsledky ukazují úzké, ale reálné provozní okno kolem pracovního bodu, přičemž variace průtoku bočních vstřiků vykazuje optimum. Doporučenou metodou je explicitní Eulerova metoda v jejím výchozím časovém kroku, která dosahuje přesnosti prostorové diskretizace na inženýrsky relevantní síti s nejnižšími výpočetními náklady; tato volba je vázána na použité izotermní kinetické schéma.
+
+\selectlanguage{english}

@@ -1,0 +1,56 @@
+% =============================================================================
+% main.tex — Root document for the bachelor thesis
+% =============================================================================
+\documentclass[12pt,a4paper]{report}
+
+\input{preamble}
+
+\begin{document}
+
+% --- SIS Title Pages (English + Czech) ---
+\includepdf[pages=-]{entry_sheet.pdf}
+
+% =============================================================================
+% FRONT MATTER — roman page numbering (i, ii, iii, ...)
+% =============================================================================
+\pagenumbering{roman}
+
+% --- Summary (EN) and Souhrn (CZ) ---
+\input{chapters/summary}
+
+% --- Table of Contents, List of Figures, List of Tables ---
+\singlespacing%
+\tableofcontents
+\listoffigures
+\listoftables
+\newpage
+
+% =============================================================================
+% MAIN MATTER — arabic page numbering (1, 2, 3, ...)
+% =============================================================================
+\pagenumbering{arabic}
+\onehalfspacing%
+
+% --- Chapters ---
+\input{chapters/introduction}
+\input{chapters/kinetic_model}
+\input{chapters/governing_equations}
+\input{chapters/mathematical_model}
+\input{chapters/results_and_discussions}
+\input{chapters/conclusions}
+
+% =============================================================================
+% BACK MATTER — Bibliography
+% =============================================================================
+\newpage
+\singlespacing%
+\footnotesize
+\bibliographystyle{unsrt}
+\bibliography{references/references}
+
+% --- List of Symbols + List of Abbreviations ---
+\normalsize
+\singlespacing%
+\input{chapters/symbols_and_abbreviations}
+
+\end{document}
