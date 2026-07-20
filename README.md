@@ -2,6 +2,7 @@
 
 **Fortran 2018 finite-volume solver + Python experiment pipeline for a stiff system of 2,000 coupled differential equations**
 
+[![CI](https://github.com/OB-1997/pfr-reactor-simulation/actions/workflows/ci.yml/badge.svg)](https://github.com/OB-1997/pfr-reactor-simulation/actions/workflows/ci.yml)
 ![Fortran](https://img.shields.io/badge/Fortran-2018-734f96?logo=fortran)
 ![Python](https://img.shields.io/badge/Python-3.10+-3776ab?logo=python&logoColor=white)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green)
